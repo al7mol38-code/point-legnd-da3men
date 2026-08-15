@@ -21,12 +21,12 @@ TOP_ALLOWED_ROLES = {
 }
 
 # =========================
-# 🗄️ MongoDB (ربط قاعدة البيانات)
+# 🗄️ MongoDB (قاعدة بيانات منفصلة)
 # =========================
 MONGO_URI = os.getenv("MONGO_URI")
 client = MongoClient(MONGO_URI)
 db = client["pointsbot"]
-points_collection = db["points_bot3"]  # مجموعة خاصة ومنفصلة للبوت الثالث
+points_collection = db["points_bot3"]  # خزانة منفصلة تماماً للبوت الثالث
 
 # =========================
 # 🤖 إعداد البوت
@@ -38,7 +38,7 @@ intents.members = True
 bot = commands.Bot(command_prefix="#", intents=intents, help_command=None)
 
 # =========================
-# 🔐 الدوال المساعدة (MongoDB)
+# 🔐 الدوال المساعدة
 # =========================
 def has_admin_permission(member):
     return any(role.id in ADMIN_ROLES for role in member.roles)
@@ -146,12 +146,12 @@ async def reset_points(ctx, member: discord.Member = None):
         await ctx.send("⚠️ **تم تصفير جميع نقاط هذا البوت بنجاح!**")
 
 # =========================
-# 🌐 Flask (سيرفر الـ Web للتشغيل 24/7)
+# 🌐 Flask (Keep Alive Web Server)
 # =========================
 app = Flask(__name__)
 @app.route("/")
 def home(): 
-    return "Bot 3 (Points System) is Running Live!"
+    return "Bot 3 is Running Live!"
 
 def run_flask(): 
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 10000)))
